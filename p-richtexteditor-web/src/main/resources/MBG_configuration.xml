@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+<generatorConfiguration>
+    <context id="MySQLTables" targetRuntime="MyBatis3">
+        <plugin type="com.jeff.template.mapper.MySQLGeneratorPrimaryKeyPlugin"></plugin>
+        <plugin type="com.jeff.template.mapper.EntitySerializablePlugin"></plugin>
+        <commentGenerator type="com.jeff.template.mapper.MyCommentGenerator">
+        </commentGenerator>
+        <!-- 生发环境数据库配置:修改配置 -->
+        <jdbcConnection driverClass="com.mysql.jdbc.Driver"
+                        connectionURL="jdbc:mysql://localhost:3306/db_user?useSSL=false"
+                        userId="root" password="root">
+        </jdbcConnection>
+        <javaTypeResolver>
+            <property name="forceBigDecimals" value="false"/>
+        </javaTypeResolver>
+        <!--targetProject请使用绝对路径-->
+        <javaModelGenerator targetPackage="com.jeff.template.model.base"
+                            targetProject="p-template-api\src\main\java">
+            <property name="enableSubPackages" value="true"/>
+
+            <property name="trimStrings" value="true"/>
+        </javaModelGenerator>
+        <sqlMapGenerator targetPackage="sqlmapper\base"
+                         targetProject="p-template-web\src\main\resources">
+            <property name="enableSubPackages" value="true"/>
+        </sqlMapGenerator>
+        <javaClientGenerator type="XMLMAPPER" targetPackage="com.jeff.template.mapper.base"
+                             targetProject="p-template-web\src\main\java">
+
+            <property name="enableSubPackages" value="true"/>
+        </javaClientGenerator>
+
+
+        <table tableName="t_order"
+               domainObjectName="Order"
+               enableCountByExample="true"
+               enableUpdateByExample="true" enableDeleteByExample="true"
+               enableSelectByExample="true" selectByExampleQueryId="true"
+               enableInsert="true" enableUpdateByPrimaryKey="true"
+               enableDeleteByPrimaryKey="true">
+            <property name="useActualColumnNames" value="false"/>
+
+            <!--<columnOverride column="LONG_VARCHAR_FIELD" jdbcType="VARCHAR"/>-->
+        </table>
+
+        <!--<table tableName="market_budget_target"-->
+               <!--enableCountByExample="true"-->
+               <!--enableUpdateByExample="true" enableDeleteByExample="true"-->
+               <!--enableSelectByExample="true" selectByExampleQueryId="true"-->
+               <!--enableInsert="true" enableUpdateByPrimaryKey="true"-->
+               <!--enableDeleteByPrimaryKey="true">-->
+            <!--<property name="useActualColumnNames" value="false"/>-->
+
+            <!--&lt;!&ndash;<columnOverride column="LONG_VARCHAR_FIELD" jdbcType="VARCHAR"/>&ndash;&gt;-->
+        <!--</table>-->
+
+        <!--<table tableName="market_info"-->
+               <!--enableCountByExample="true"-->
+               <!--enableUpdateByExample="true" enableDeleteByExample="true"-->
+               <!--enableSelectByExample="true" selectByExampleQueryId="true"-->
+               <!--enableInsert="true" enableUpdateByPrimaryKey="true"-->
+               <!--enableDeleteByPrimaryKey="true">-->
+            <!--<property name="useActualColumnNames" value="false"/>-->
+
+            <!--&lt;!&ndash;<columnOverride column="LONG_VARCHAR_FIELD" jdbcType="VARCHAR"/>&ndash;&gt;-->
+        <!--</table>-->
+
+    </context>
+</generatorConfiguration>

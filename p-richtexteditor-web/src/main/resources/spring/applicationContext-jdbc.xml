@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="
+    	http://www.springframework.org/schema/beans 
+    	http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
+    	http://www.springframework.org/schema/context 
+    	http://www.springframework.org/schema/context/spring-context-4.2.xsd
+    	http://www.springframework.org/schema/tx
+		http://www.springframework.org/schema/tx/spring-tx-4.2.xsd
+		http://www.springframework.org/schema/aop
+		http://www.springframework.org/schema/aop/spring-aop-4.2.xsd
+    	">
+
+	<!--<bean id="dataSource" class="org.apache.tomcat.jdbc.pool.DataSource">-->
+        <!--<property name="driverClassName" value="${jdbc.mysql.Driver}"></property>-->
+        <!--<property name="url" value="${jdbc.master.url}"></property>-->
+        <!--<property name="username" value="${jdbc.master.username}"></property>-->
+        <!--<property name="password" value="${jdbc.master.password}"></property>-->
+
+        <!--&lt;!&ndash;公共配置属性&ndash;&gt;-->
+        <!--<property name="maxActive" value="${jdbc.maxActive}"></property>-->
+        <!--<property name="initialSize" value="${jdbc.initialSize}"></property>-->
+        <!--<property name="minIdle" value="${jdbc.minIdle}"></property>-->
+        <!--<property name="jdbcInterceptors" value="${jdbc.jdbcInterceptors}"></property>-->
+
+
+        <!--<property name="testWhileIdle" value="true"></property>-->
+        <!--<property name="testOnBorrow" value="true"></property>-->
+        <!--<property name="validationQuery" value="select 1"></property>-->
+        <!--<property name="testOnReturn" value="false"></property>-->
+        <!--<property name="validationInterval" value="30000"></property>-->
+        <!--<property name="timeBetweenEvictionRunsMillis" value="5000"></property>-->
+        <!--<property name="maxWait" value="15000"></property>-->
+        <!--<property name="removeAbandoned" value="true"></property>-->
+        <!--<property name="removeAbandonedTimeout" value="60"></property>-->
+        <!--<property name="logAbandoned" value="false"></property>-->
+        <!--<property name="minEvictableIdleTimeMillis" value="30000"></property>-->
+        <!--<property name="jmxEnabled" value="true"/>-->
+        <!--&lt;!&ndash;这个名字不能随便更改,因为它对应着我们perseus中mbean的name&ndash;&gt;-->
+        <!--<property name="name" value="jdbcPool"/>-->
+    <!--</bean>-->
+    <!---->
+	<!--<bean id="mySqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">-->
+		<!--<property name="dataSource" ref="dataSource" />-->
+		<!--<property name="mapperLocations">-->
+			<!--<array>-->
+				<!--<value>classpath*:sqlmapper/**/*.xml</value>-->
+			<!--</array>-->
+		<!--</property>-->
+		<!--<property name="typeAliasesPackage" value="com.jeff.template.model.base" />-->
+	<!--</bean>-->
+
+	<!--<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">-->
+		<!--<property name="dataSource" ref="dataSource" />-->
+        <!--<property name="nestedTransactionAllowed" value="true"/>-->
+	<!--</bean>-->
+
+	<!--<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer" lazy-init="true">-->
+		<!--<property name="basePackage" value="com.jeff.template.mapper" />-->
+		<!--<property name="sqlSessionFactoryBeanName" value="mySqlSessionFactory" />-->
+	<!--</bean>-->
+
+	<!--<tx:annotation-driven transaction-manager="transactionManager"></tx:annotation-driven>-->
+</beans>
