@@ -3,9 +3,20 @@
 <head>
     <meta charset="UTF-8"/>
     <title>index</title>
+    <style type="text/css">
+        .upload {
+            margin-top: 100px;
+            margin-left: 100px;
+            text-align: center;
+        }
+    </style>
 </head>
 <body>
-index.html99999
+     <h2>File upload demo</h2>
+     <form class="upload" action="/uploadFilePost"  method="post" enctype="multipart/form-data">
+         <input type="file" name="file" size="45"><br>
+         <input type="submit" name="submit" value="submit">
+     </form>
 </body>
 </html>
 
