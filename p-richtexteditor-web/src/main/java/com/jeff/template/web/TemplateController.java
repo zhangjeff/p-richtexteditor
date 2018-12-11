@@ -63,7 +63,7 @@ public class TemplateController {
 
         String token = "ccfe3851-6d1f-4f84-9926-995b83877717";
         MultiValueMap<String, Object> bodyParams = new LinkedMultiValueMap<>();
-        String img_upload_url = "http://file-yun.uat1.rs.com/file/public/upload/e";
+        String img_upload_url = "";
         bodyParams.add("file",  resource);
         bodyParams.add("appName", "dealer");
         bodyParams.add("token", token);
