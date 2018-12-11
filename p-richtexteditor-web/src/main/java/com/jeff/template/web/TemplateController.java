@@ -5,6 +5,7 @@ import com.jeff.template.service.IUserService;
 import com.jeff.template.web.wang.WangEditor;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpEntity;
@@ -21,9 +22,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.Date;
 import java.util.List;
 
@@ -32,6 +31,12 @@ import java.util.List;
 public class TemplateController {
     @Autowired
     private IUserService userService;
+
+    @Value("${img_upload_url}")
+    private String imgUploadUrl;
+
+    @Value("${token}")
+    private String token;
 
     @ResponseBody
     @RequestMapping(method = RequestMethod.GET ,value = "/user/search")
@@ -61,9 +66,7 @@ public class TemplateController {
             }
         };
 
-        String token = "ccfe3851-6d1f-4f84-9926-995b83877717";
         MultiValueMap<String, Object> bodyParams = new LinkedMultiValueMap<>();
-        String img_upload_url = "";
         bodyParams.add("file",  resource);
         bodyParams.add("appName", "dealer");
         bodyParams.add("token", token);
@@ -71,7 +74,7 @@ public class TemplateController {
         headers.setContentType(MediaType.MULTIPART_FORM_DATA);
         HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(bodyParams, headers);
         RestTemplate restTemplate = new RestTemplate();
-        FileUploadReturn fileUploadReturn = restTemplate.postForObject(img_upload_url, requestEntity, FileUploadReturn.class, String.class);
+        FileUploadReturn fileUploadReturn = restTemplate.postForObject(imgUploadUrl, requestEntity, FileUploadReturn.class, String.class);
         return fileUploadReturn;
     }
 
@@ -86,9 +89,7 @@ public class TemplateController {
             }
         };
 
-        String token = "";
         MultiValueMap<String, Object> bodyParams = new LinkedMultiValueMap<>();
-        String img_upload_url = "";
         bodyParams.add("file",  resource);
         bodyParams.add("appName", "dealer");
         bodyParams.add("token", token);
@@ -96,7 +97,7 @@ public class TemplateController {
         headers.setContentType(MediaType.MULTIPART_FORM_DATA);
         HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(bodyParams, headers);
         RestTemplate restTemplate = new RestTemplate();
-        FileUploadReturn fileUploadReturn = restTemplate.postForObject(img_upload_url, requestEntity, FileUploadReturn.class, String.class);
+        FileUploadReturn fileUploadReturn = restTemplate.postForObject(imgUploadUrl, requestEntity, FileUploadReturn.class, String.class);
         return fileUploadReturn;
     }
 
@@ -114,9 +115,7 @@ public class TemplateController {
                 }
             };
 
-            String token = "";
             MultiValueMap<String, Object> bodyParams = new LinkedMultiValueMap<>();
-            String img_upload_url = "";
             bodyParams.add("file",  resource);
             bodyParams.add("appName", "dealer");
             bodyParams.add("token", token);
@@ -124,7 +123,7 @@ public class TemplateController {
             headers.setContentType(MediaType.MULTIPART_FORM_DATA);
             HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(bodyParams, headers);
             RestTemplate restTemplate = new RestTemplate();
-            FileUploadReturn fileUploadReturn = restTemplate.postForObject(img_upload_url, requestEntity, FileUploadReturn.class, String.class);
+            FileUploadReturn fileUploadReturn = restTemplate.postForObject(imgUploadUrl, requestEntity, FileUploadReturn.class, String.class);
             String url = fileUploadReturn.getValue().getFileUrl();
             String [] str = {url};
             WangEditor we = new WangEditor(str);
