@@ -2,6 +2,8 @@ package com.jeff.template.web;
 import com.jeff.template.web.upload.FileUploadReturn;
 import com.jeff.template.model.base.User;
 import com.jeff.template.service.IUserService;
+import com.jeff.template.web.wang.WangEditor;
+import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
@@ -13,12 +15,15 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Date;
 import java.util.List;
 
@@ -56,6 +61,31 @@ public class TemplateController {
             }
         };
 
+        String token = "ccfe3851-6d1f-4f84-9926-995b83877717";
+        MultiValueMap<String, Object> bodyParams = new LinkedMultiValueMap<>();
+        String img_upload_url = "http://file-yun.uat1.rs.com/file/public/upload/e";
+        bodyParams.add("file",  resource);
+        bodyParams.add("appName", "dealer");
+        bodyParams.add("token", token);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+        HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(bodyParams, headers);
+        RestTemplate restTemplate = new RestTemplate();
+        FileUploadReturn fileUploadReturn = restTemplate.postForObject(img_upload_url, requestEntity, FileUploadReturn.class, String.class);
+        return fileUploadReturn;
+    }
+
+
+    @ResponseBody
+    @RequestMapping(value = "/uploadFileForEditor", method = RequestMethod.POST)
+    public FileUploadReturn uploadFileForEditor(MultipartFile file, HttpServletRequest request) throws IOException {
+        Resource resource = new ByteArrayResource(file.getBytes()) {
+            @Override
+            public String getFilename() {
+                return file.getOriginalFilename();
+            }
+        };
+
         String token = "";
         MultiValueMap<String, Object> bodyParams = new LinkedMultiValueMap<>();
         String img_upload_url = "";
@@ -68,5 +98,41 @@ public class TemplateController {
         RestTemplate restTemplate = new RestTemplate();
         FileUploadReturn fileUploadReturn = restTemplate.postForObject(img_upload_url, requestEntity, FileUploadReturn.class, String.class);
         return fileUploadReturn;
+    }
+
+    @RequestMapping(value = "/upload",method=RequestMethod.POST)
+    @ResponseBody
+    public WangEditor uploadFile(
+            @RequestParam("myFile") MultipartFile multipartFile,
+            HttpServletRequest request) {
+
+        try {
+            Resource resource = new ByteArrayResource(multipartFile.getBytes()) {
+                @Override
+                public String getFilename() {
+                    return multipartFile.getOriginalFilename();
+                }
+            };
+
+            String token = "";
+            MultiValueMap<String, Object> bodyParams = new LinkedMultiValueMap<>();
+            String img_upload_url = "";
+            bodyParams.add("file",  resource);
+            bodyParams.add("appName", "dealer");
+            bodyParams.add("token", token);
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+            HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(bodyParams, headers);
+            RestTemplate restTemplate = new RestTemplate();
+            FileUploadReturn fileUploadReturn = restTemplate.postForObject(img_upload_url, requestEntity, FileUploadReturn.class, String.class);
+            String url = fileUploadReturn.getValue().getFileUrl();
+            String [] str = {url};
+            WangEditor we = new WangEditor(str);
+            return we;
+        } catch (IOException e) {
+            System.out.println("上传文件失败" + e.getMessage());
+        }
+        return null;
+
     }
 }
