@@ -3,7 +3,6 @@ import com.jeff.template.web.upload.FileUploadReturn;
 import com.jeff.template.model.base.User;
 import com.jeff.template.service.IUserService;
 import com.jeff.template.web.wang.WangEditor;
-import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ByteArrayResource;
@@ -81,7 +80,7 @@ public class TemplateController {
 
     @ResponseBody
     @RequestMapping(value = "/uploadFileForEditor", method = RequestMethod.POST)
-    public FileUploadReturn uploadFileForEditor(MultipartFile file, HttpServletRequest request) throws IOException {
+    public WangEditor uploadFileForEditor(MultipartFile file, HttpServletRequest request) throws IOException {
         Resource resource = new ByteArrayResource(file.getBytes()) {
             @Override
             public String getFilename() {
@@ -98,7 +97,9 @@ public class TemplateController {
         HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(bodyParams, headers);
         RestTemplate restTemplate = new RestTemplate();
         FileUploadReturn fileUploadReturn = restTemplate.postForObject(imgUploadUrl, requestEntity, FileUploadReturn.class, String.class);
-        return fileUploadReturn;
+        String [] str = {fileUploadReturn.getValue().getFileUrl()};
+        WangEditor we = new WangEditor(str);
+        return we;
     }
 
     @RequestMapping(value = "/upload",method=RequestMethod.POST)
@@ -128,6 +129,41 @@ public class TemplateController {
             String [] str = {url};
             WangEditor we = new WangEditor(str);
             return we;
+        } catch (IOException e) {
+            System.out.println("上传文件失败" + e.getMessage());
+        }
+        return null;
+
+    }
+
+
+    @RequestMapping(value = "/uploadmobile",method=RequestMethod.POST)
+    @ResponseBody
+    public String uploadFileMobile(
+            @RequestParam("wangEditorMobileFile") MultipartFile multipartFile,
+            HttpServletRequest request) {
+
+        try {
+            Resource resource = new ByteArrayResource(multipartFile.getBytes()) {
+                @Override
+                public String getFilename() {
+                    return multipartFile.getOriginalFilename();
+                }
+            };
+
+            MultiValueMap<String, Object> bodyParams = new LinkedMultiValueMap<>();
+            bodyParams.add("file",  resource);
+            bodyParams.add("appName", "dealer");
+            bodyParams.add("token", token);
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+            HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(bodyParams, headers);
+            RestTemplate restTemplate = new RestTemplate();
+            FileUploadReturn fileUploadReturn = restTemplate.postForObject(imgUploadUrl, requestEntity, FileUploadReturn.class, String.class);
+            String url = fileUploadReturn.getValue().getFileUrl();
+//            String [] str = {url};
+//            WangEditor we = new WangEditor(str);
+            return url;
         } catch (IOException e) {
             System.out.println("上传文件失败" + e.getMessage());
         }

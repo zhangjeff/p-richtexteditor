@@ -1,6 +1,7 @@
 package com.jeff.template.web.upload;
 
 import java.io.Serializable;
+import java.util.Arrays;
 
 
 public class FileUploadReturn implements Serializable {
@@ -61,4 +62,5 @@ public class FileUploadReturn implements Serializable {
         }
 
     }
+
 }
