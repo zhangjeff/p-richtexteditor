@@ -1,4 +1,5 @@
 package com.jeff.template.web;
+import com.alibaba.fastjson.JSONObject;
 import com.jeff.template.web.upload.FileUploadReturn;
 import com.jeff.template.model.base.User;
 import com.jeff.template.service.IUserService;
@@ -165,6 +166,85 @@ public class TemplateController {
 //            WangEditor we = new WangEditor(str);
             return url;
         } catch (IOException e) {
+            System.out.println("上传文件失败" + e.getMessage());
+        }
+        return null;
+
+    }
+
+
+    @RequestMapping(value = "/uploadFilekindeditor",method=RequestMethod.POST)
+    @ResponseBody
+    public JSONObject uploadFilekindeditor(
+            @RequestParam("imgFile") MultipartFile multipartFile,
+            HttpServletRequest request) {
+
+        try {
+            Resource resource = new ByteArrayResource(multipartFile.getBytes()) {
+                @Override
+                public String getFilename() {
+                    return multipartFile.getOriginalFilename();
+                }
+            };
+
+            MultiValueMap<String, Object> bodyParams = new LinkedMultiValueMap<>();
+            bodyParams.add("file",  resource);
+            bodyParams.add("appName", "dealer");
+            bodyParams.add("token", token);
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+            HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(bodyParams, headers);
+            RestTemplate restTemplate = new RestTemplate();
+            FileUploadReturn fileUploadReturn = restTemplate.postForObject(imgUploadUrl, requestEntity, FileUploadReturn.class, String.class);
+            String url = fileUploadReturn.getValue().getFileUrl();
+            JSONObject obj = new JSONObject();
+            obj.put("error", 0);
+            obj.put("url", url);
+            return obj;
+        } catch (IOException e) {
+            System.out.println("上传文件失败" + e.getMessage());
+        }
+        return null;
+
+    }
+
+
+    @RequestMapping(value = "/saveFilekindeditor",method=RequestMethod.POST)
+    @ResponseBody
+    public String saveFilekindeditor(
+            @RequestParam("content1") String content1,
+            HttpServletRequest request) {
+
+        try {
+            String str = content1;
+            str = str.replaceAll("&", "&amp;");
+            str = str.replaceAll("<", "&lt;");
+            str = str.replaceAll(">", "&gt;");
+            str = str.replaceAll("\"", "&quot;");
+
+            System.out.println(str);
+
+//            Resource resource = new ByteArrayResource(multipartFile.getBytes()) {
+//                @Override
+//                public String getFilename() {
+//                    return multipartFile.getOriginalFilename();
+//                }
+//            };
+//
+//            MultiValueMap<String, Object> bodyParams = new LinkedMultiValueMap<>();
+//            bodyParams.add("file",  resource);
+//            bodyParams.add("appName", "dealer");
+//            bodyParams.add("token", token);
+//            HttpHeaders headers = new HttpHeaders();
+//            headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+//            HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(bodyParams, headers);
+//            RestTemplate restTemplate = new RestTemplate();
+//            FileUploadReturn fileUploadReturn = restTemplate.postForObject(imgUploadUrl, requestEntity, FileUploadReturn.class, String.class);
+//            String url = fileUploadReturn.getValue().getFileUrl();
+//            String [] str = {url};
+//            WangEditor we = new WangEditor(str);
+            return "1";
+        } catch (Exception e) {
             System.out.println("上传文件失败" + e.getMessage());
         }
         return null;
